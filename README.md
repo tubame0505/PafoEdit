@@ -32,20 +32,27 @@ python3 -m http.server 8123 --directory web
 
 http://127.0.0.1:8123/ を開く。フォントは `@font-face` で読むため、`file://` ではなく HTTP で配信する。
 
-## Cloudflare Pages（GitHub 連携）
+## Cloudflare Workers（Git 連携 / Static Assets）
 
-1. このリポジトリを GitHub に push する（現在のリモートは未設定）。
-2. Cloudflare ダッシュボード → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**。
-3. リポジトリを選び、次を設定する:
+Pages タブが無いダッシュボードでは **Workers Static Assets** で配信する。`wrangler.jsonc` が `web/` をアセットディレクトリとして指定している。
+
+1. `main` と `desktop` を GitHub に push する。
+2. Cloudflare ダッシュボード → **Workers & Pages** → **Create application** → **Import a repository**（Git 連携）。
+3. リポジトリ `tubame0505/PafoEdit` を選び、次を設定する:
+   - Application / Worker name: `pafoedit`（`wrangler.jsonc` の `name` と一致させる）
    - Production branch: `main`
-   - Framework preset: `None`
-   - Build command: 空
-   - Build output directory: `web`
-4. **Save and Deploy**。以後 `main` への push で自動デプロイされる。
+   - Build command: `exit 0`
+   - Deploy command: `npx wrangler deploy`
+   - Preview command / Non-production branch deploy command: `npx wrangler versions upload`（プレビューを使わないなら空）
+   - Root directory: 空欄
+4. **Deploy**。以後 `main` への push で自動デプロイされる。
 
-- ビルド工程は無く、`web/` がそのまま公開ルートになる。
+- 公開 URL は `https://pafoedit.<account>.workers.dev/`（Worker 名とアカウントの workers.dev サブドメイン）。
+- Worker スクリプトは持たず、`assets.directory = ./web` の静的アセットのみ。
 - `web/_headers` でフォントを1年キャッシュする。
-- Free プランの制限（25 MiB/ファイル、20,000ファイル）に対し、最大の資産はフォントの 4.06 MiB。
+- 制限は Pages と同じ 25 MiB/ファイル、20,000ファイル。最大の資産はフォント 4.06 MiB。
+- 非 production ブランチのビルドは有効にしない（`desktop` ブランチには `web/` が無いため）。
+- Worker 名を変える場合は `wrangler.jsonc` の `name` も変える。
 
 ## 対応ブラウザ
 
@@ -62,4 +69,4 @@ http://127.0.0.1:8123/ を開く。フォントは `@font-face` で読むため�
 
 ## デスクトップ版
 
-Python / PySide6 実装は `desktop` ブランチにある。
+Python / PySide6 実装は `desktop` ブランチにある（`git push -u origin desktop` で GitHub にも反映する）。

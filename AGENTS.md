@@ -56,8 +56,11 @@ IME の変換だけは手動確認（`textarea` のネイティブ挙動に依�
 
 ## デプロイ
 
-- Cloudflare Pages: 出力ディレクトリ `web`、ビルドコマンド空、Production branch `main`。
-- 最大資産はフォント 4.06 MiB（Free プランの 25 MiB/ファイル制限内）。
+- Cloudflare Workers Static Assets（Pages タブが無いダッシュボードの正規ルート）。
+- `wrangler.jsonc`: `name = pafoedit`、`assets.directory = ./web`、Worker スクリプトなし。
+- Workers Builds: Production branch `main`、Build command `exit 0`、Deploy command `npx wrangler deploy`、非 production のビルドは無効（`desktop` に `web/` が無い）。
+- ダッシュボードの Worker 名と `wrangler.jsonc` の `name` を一致させる。変えるときは両方変える。
+- 最大資産はフォント 4.06 MiB（25 MiB/ファイル制限内）。
 - `_headers` は削除しない。フォントの URL を変えたらキャッシュ名も変える。
 
 ## フォント差し替え
