@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PafoEdit</title>
+<meta name="description" content="1行20半角列の制限表示つきプレーンテキストエディタ">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="app">
+  <canvas id="under" aria-hidden="true"></canvas>
+  <textarea id="editor" wrap="off" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" aria-label="PafoEdit"></textarea>
+  <canvas id="over" aria-hidden="true"></canvas>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

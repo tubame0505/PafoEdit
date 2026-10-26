@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "PafoEdit Mono";
+  src: url("fonts/NotoSansMonoJP-subset.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #fff;
+}
+
+body {
+  overflow: hidden;
+}
+
+#app {
+  position: fixed;
+  inset: 8px;
+}
+
+#app canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#under {
+  z-index: 0;
+}
+
+#over {
+  z-index: 2;
+}
+
+#editor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: #000;
+  caret-color: #000;
+  font: 16pt/30px "PafoEdit Mono", monospace;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  white-space: pre;
+  overflow: auto;
+}
+
+#editor::selection {
+  background: rgba(0, 100, 255, 0.25);
+}
