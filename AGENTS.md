@@ -27,7 +27,8 @@ PafoEdit (web): 1行20半角列の固定幅エディタ。静的 HTML/CSS/JS、�
   位置は canvas の `measureText` による実測（キャッシュ）で求める。CSS の `ch` や固定係数で近似しない。
 - フォントは `@font-face` で `web/fonts` の TTF を読み、`document.fonts.check()` が真になってから 1:2 を検証する。読み込み前に測って警告を出さない。
 - タブ: `Tab`/`Shift+Tab` とドラッグ&ドロップを `preventDefault`。貼り付けは CRLF/CR→LF、タブ→半角4空白。挿入は `execCommand("insertText")` で undo 履歴を維持する。
-- 永続化・ネットワーク・ビルド工程を追加しない。ファイル入出力は持たない。
+- 永続化は `localStorage`（キー `pafoedit:text`）のみ。`input` のたびに最新の本文を保存し、起動時に復元してカーソルを末尾へ置く。保存失敗は警告のみで編集を止めない。
+- ネットワーク・ファイル入出力・Cookie/IndexedDB など他の永続化・ビルド工程を追加しない。
 
 ## レイヤと座標
 
@@ -50,6 +51,7 @@ python3 -m http.server 8123 --directory web
 - ガイドが `20 × half` の位置にあり、横スクロールで追従する。
 - `Tab` で本文が変わらない。貼り付けのタブが4空白になる。undo で貼り付けが戻る。
 - コピーは textarea のネイティブ動作（アプリ側で `copy` を横取りしない）。
+- 入力 → `localStorage['pafoedit:text']` が即時更新される。リロード後に本文が復元され、カーソルが末尾にある。
 
 自動化する場合は headless Chromium で `page.evaluate` と `getImageData` を使う。
 IME の変換だけは手動確認（`textarea` のネイティブ挙動に依存）。
